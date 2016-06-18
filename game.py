@@ -4,14 +4,17 @@ import random,sys,pygame,time
 
 pygame.init()
 
-
+c=0
 black = (0,0,0)
+white=(255,255,255)
 
 
 tela = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Jeremias on the fire ,-,")
 je=pygame.image.load("jeremias.png")
 jed=pygame.image.load("jeremiasd.png")
+pente= pygame.image.load("pente.png")
+coxinha = pygame.image.load("coxinha.png")
 
 clock=pygame.time.Clock()
 
@@ -28,11 +31,20 @@ yy=False
 
 lorr=False
 #Fmov
+
+
+
+
 def thig(x,y,h,w,color):
 	pygame.draw.rect(tela,color,[x,y,h,w])
 def text_object(text,font):
 	text_surface=font.render(text,True,black)
 	return text_surface,text_surface.get_rect()
+	
+def score(count):
+	font = pygame.font.SysFont(None,25)
+	text = font.render("coxinhas: "+str(count),True,black)
+	tela.blit(text,(0,0))
 	
 def message_display(text):
 	ltext = pygame.font.Font("freesansbold.ttf",60)
@@ -52,6 +64,46 @@ def char(x,y,teste):
 		tela.blit(jed,(x,y))
 	else:
 		tela.blit(je,(x,y))
+def pen (x,y):
+	tela.blit(pente,(x,y))
+	
+def r_rect(x,y,char_x,char_y,rx,ry,rh,rw,rx1,ry1,rh1,rw1,rx2,ry2,rh2,rw2,rxw,ryw,rhw,rww,coxas): 	
+	global c
+	musica = pygame.mixer.music
+	thig(rx,ry,rh,rw,black)
+	thig(rx1,ry1,rh1,rw1,black)
+	thig(rx2,ry2,rh2,rw2,black)
+	thig(rxw,ryw,rhw,rww,black)
+	if (x > rx and x <= rx + rw or x + char_x > rx and x+char_x < rx+rw) and (y > ry and y < ry+rh or y+char_y > ry and y+char_y < ry+rh):
+		musica.load("a.mp3")
+		musica.play()
+		thig(rx,ry,rh,rw,white)
+		pen(rx+3,ry+7)
+		message_display("Pente ;-;")
+		clock.tick(1)
+	if (x > rx1 and x <= rx1 + rw1 or x + char_x > rx1 and x+char_x < rx1+rw1) and (y > ry1 and y < ry1+rh1 or y+char_y > ry1 and y+char_y < ry1+rh1):
+		musica.load("a.mp3")
+		musica.play()
+		thig(rx1,ry1,rh1,rw1,white)
+		pen(rx1+3,ry1+7)
+		message_display("Pente ;-;")
+		clock.tick(1)
+	if (x > rx2 and x <= rx2 + rw2 or x + char_x > rx2 and x+char_x < rx2+rw2) and (y > ry2 and y < ry2+rh2 or y+char_y > ry2 and y+char_y < ry2+rh2):
+		musica.load("a.mp3")
+		musica.play()
+		thig(rx2,ry2,rh2,rw2,white)
+		pen(rx2+3,ry2+7)
+		message_display("Pente ;-;")
+		clock.tick(1)
+		
+	if (x > rxw and x <= rxw + rww or x + char_x > rxw and x+char_x < rxw+rww) and (y > ryw and y < ryw+rhw or y+char_y > ryw and y+char_y < ryw+rhw):
+		musica.load("sound.mp3")
+		musica.play()
+		c = coxas +1
+		thig(rxw,ryw,rhw,rww,white)
+		tela.blit(coxinha,(rxw+6,ryw+7))
+		score(coxas)
+		message_display("Coxinha ^^")
 
 def gameloop():
 	
@@ -59,6 +111,7 @@ def gameloop():
 	musica = pygame.mixer.music
 	musica.load("darkness.mp3")
 	musica.play()
+	coxas = c
 	#Mov
 	x = 380
 	xt= False
@@ -94,6 +147,7 @@ def gameloop():
 	char_x= 25
 	char_y= 35
 	while 1:
+		
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit()
@@ -117,11 +171,13 @@ def gameloop():
 				if event.key == pygame.K_s or event.key==pygame.K_DOWN:
 					yy = False
 		
+		
 
 
-		if first:
-			tela.fill([255,255,255])
-			tela.blit(jed,(x,y))
+		
+		tela.fill([255,255,255])
+		tela.blit(jed,(x,y))
+		score(coxas)
 
 		if xt:
 			if x >= 770:
@@ -130,6 +186,7 @@ def gameloop():
 			x+=5
 			lorr=True
 			char(x,y,lorr)
+			score(coxas)
 			
 			
 			ejere=False
@@ -141,41 +198,25 @@ def gameloop():
 			x-=5
 			lorr=False
 			char(x,y,lorr)
+			score(coxas)
 		if yt:
 			if y <= 0:
 				y=1
 				message_display("limite")
 			y-=5
 			char(x,y,lorr)
+			score(coxas)
 		if yy:
 			if y >= 555:
 				y=554
 				message_display("limite")
 			y+=5
 			char(x,y,lorr)
+			score(coxas)
+		r_rect(x,y,char_x,char_y,rx,ry,rh,rw,rx1,ry1,rh1,rw1,rx2,ry2,rh2,rw2,rxw,ryw,rhw,rww,coxas)
 			
+		
 			
-		thig(rx,ry,rh,rw,black)
-		thig(rx1,ry1,rh1,rw1,black)
-		thig(rx2,ry2,rh2,rw2,black)
-		thig(rxw,ryw,rhw,rww,black)
-		if (x > rx and x <= rx + rw or x + char_x > rx and x+char_x < rx+rw) and (y > ry and y < ry+rh or y+char_y > ry and y+char_y < ry+rh):
-			musica.load("a.mp3")
-			musica.play()
-			message_display("You die/vulgo vc morreu")
-		if (x > rx1 and x <= rx1 + rw1 or x + char_x > rx1 and x+char_x < rx1+rw1) and (y > ry1 and y < ry1+rh1 or y+char_y > ry1 and y+char_y < ry1+rh1):
-			musica.load("a.mp3")
-			musica.play()
-			message_display("You die/vulgo vc morreu")
-		if (x > rx2 and x <= rx2 + rw2 or x + char_x > rx2 and x+char_x < rx2+rw2) and (y > ry2 and y < ry2+rh2 or y+char_y > ry2 and y+char_y < ry2+rh2):
-			musica.load("a.mp3")
-			musica.play()
-			message_display("You die/vulgo vc morreu")
-			
-		if (x > rxw and x <= rxw + rww or x + char_x > rxw and x+char_x < rxw+rww) and (y > ryw and y < ryw+rhw or y+char_y > ryw and y+char_y < ryw+rhw):
-			musica.load("sound.mp3")
-			musica.play()
-			message_display("You Win/sortudo")
 			
 				
 		pygame.display.flip()

@@ -7,6 +7,10 @@ pygame.init()
 c=0
 black = (0,0,0)
 white=(255,255,255)
+red = (200,0,0)
+L_red = (251,39,199)
+L_blue = (39,251,199)
+blue=(40,100,199)
 
 
 tela = pygame.display.set_mode((800,600))
@@ -14,7 +18,10 @@ pygame.display.set_caption("Jeremias on the fire ,-,")
 je=pygame.image.load("jeremias.png")
 jed=pygame.image.load("jeremiasd.png")
 pente= pygame.image.load("pente.png")
+pente2 = pygame.transform.scale(pente,(10,20))
 coxinha = pygame.image.load("coxinha.png")
+cox = pygame.transform.scale(coxinha,(20,20))
+pygame.display.set_icon(coxinha)
 
 clock=pygame.time.Clock()
 
@@ -39,13 +46,11 @@ def thig(x,y,h,w,color):
 	pygame.draw.rect(tela,color,[x,y,h,w])
 def text_object(text,font):
 	text_surface=font.render(text,True,black)
-	return text_surface,text_surface.get_rect()
-	
+	return text_surface,text_surface.get_rect()	
 def score(count):
 	font = pygame.font.SysFont(None,25)
 	text = font.render("coxinhas: "+str(count),True,black)
-	tela.blit(text,(0,0))
-	
+	tela.blit(text,(0,0))	
 def message_display(text):
 	ltext = pygame.font.Font("freesansbold.ttf",60)
 	textsurf,textrect=text_object(text,ltext)
@@ -55,9 +60,6 @@ def message_display(text):
 	
 	time.sleep(0.5)
 	gameloop()
-	
-
-
 def char(x,y,teste):
 	tela.fill([255,255,255])
 	if teste:
@@ -65,8 +67,7 @@ def char(x,y,teste):
 	else:
 		tela.blit(je,(x,y))
 def pen (x,y):
-	tela.blit(pente,(x,y))
-	
+	tela.blit(pente2,(x,y))	
 def r_rect(x,y,char_x,char_y,rx,ry,rh,rw,rx1,ry1,rh1,rw1,rx2,ry2,rh2,rw2,rxw,ryw,rhw,rww,coxas): 	
 	global c
 	musica = pygame.mixer.music
@@ -101,10 +102,49 @@ def r_rect(x,y,char_x,char_y,rx,ry,rh,rw,rx1,ry1,rh1,rw1,rx2,ry2,rh2,rw2,rxw,ryw
 		musica.play()
 		c = coxas +1
 		thig(rxw,ryw,rhw,rww,white)
-		tela.blit(coxinha,(rxw+6,ryw+7))
+		tela.blit(cox,(rxw+6,ryw+7))
 		score(coxas)
 		message_display("Coxinha ^^")
 
+def button(msg,x,y,w,h,color,inative_color,action = None):
+	mouse = pygame.mouse.get_pos()
+	click = pygame.mouse.get_pressed()
+	
+	if (x + w > mouse[0] > x) and (y + h > mouse[1] > y):
+		thig(x,y,w,h,inative_color)
+		if click[0] == 1 and action is not None:
+			if action == "play":
+				gameloop()
+			if action=="quit":
+				pygame.quit()
+				sys.exit()
+	else:
+		thig(x,y,w,h,color)
+	sfont = pygame.font.Font("freesansbold.ttf",20)
+	textsurfs,textrects = text_object(msg,sfont)
+	textrects.center=((x+(w/2)),(y+(h/2)))
+	tela.blit(textsurfs,textrects)
+	
+
+def menu():
+	intro = True
+	while intro:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				sys.exit()
+		tela.fill(white)
+		ltext = pygame.font.Font("freesansbold.ttf",60)
+		textsurf,textrect=text_object("Jeremias life",ltext)
+		textrect.center=((400),(200)) 
+		tela.blit(textsurf,textrect)
+		
+		button("Start",350,350,100,50,blue,L_blue,"play")
+		button("Quit",350,450,100,50,red,L_red,"quit")
+		
+		pygame.display.flip()
+		clock.tick(15)
+			
 def gameloop():
 	
 	first = True
@@ -150,6 +190,7 @@ def gameloop():
 		
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
+				pygame.quit()
 				sys.exit()
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_d or event.key==pygame.K_RIGHT:
@@ -223,4 +264,5 @@ def gameloop():
 		
 		first = False
 		clock.tick(30)
-gameloop()
+menu()
+

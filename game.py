@@ -71,40 +71,42 @@ def pen (x,y):
 def r_rect(x,y,char_x,char_y,rx,ry,rh,rw,rx1,ry1,rh1,rw1,rx2,ry2,rh2,rw2,rxw,ryw,rhw,rww,coxas): 	
 	global c
 	musica = pygame.mixer.music
-	thig(rx,ry,rh,rw,black)
-	thig(rx1,ry1,rh1,rw1,black)
-	thig(rx2,ry2,rh2,rw2,black)
-	thig(rxw,ryw,rhw,rww,black)
+	
+	
 	if (x > rx and x <= rx + rw or x + char_x > rx and x+char_x < rx+rw) and (y > ry and y < ry+rh or y+char_y > ry and y+char_y < ry+rh):
 		musica.load("a.mp3")
 		musica.play()
-		thig(rx,ry,rh,rw,white)
+		#thig(rx,ry,rh,rw,white)
 		pen(rx+3,ry+7)
 		message_display("Pente ;-;")
 		clock.tick(1)
+	else:
+		thig(rx,ry,rh,rw,black)
 	if (x > rx1 and x <= rx1 + rw1 or x + char_x > rx1 and x+char_x < rx1+rw1) and (y > ry1 and y < ry1+rh1 or y+char_y > ry1 and y+char_y < ry1+rh1):
 		musica.load("a.mp3")
 		musica.play()
-		thig(rx1,ry1,rh1,rw1,white)
 		pen(rx1+3,ry1+7)
 		message_display("Pente ;-;")
 		clock.tick(1)
+	else:
+		thig(rx1,ry1,rh1,rw1,black)
 	if (x > rx2 and x <= rx2 + rw2 or x + char_x > rx2 and x+char_x < rx2+rw2) and (y > ry2 and y < ry2+rh2 or y+char_y > ry2 and y+char_y < ry2+rh2):
 		musica.load("a.mp3")
 		musica.play()
-		thig(rx2,ry2,rh2,rw2,white)
 		pen(rx2+3,ry2+7)
 		message_display("Pente ;-;")
 		clock.tick(1)
-		
+	else:
+		thig(rx2,ry2,rh2,rw2,black)
 	if (x > rxw and x <= rxw + rww or x + char_x > rxw and x+char_x < rxw+rww) and (y > ryw and y < ryw+rhw or y+char_y > ryw and y+char_y < ryw+rhw):
 		musica.load("sound.mp3")
 		musica.play()
 		c = coxas +1
-		thig(rxw,ryw,rhw,rww,white)
 		tela.blit(cox,(rxw+6,ryw+7))
 		score(coxas)
 		message_display("Coxinha ^^")
+	else:
+		thig(rxw,ryw,rhw,rww,black)
 
 def button(msg,x,y,w,h,color,inative_color,action = None):
 	mouse = pygame.mouse.get_pos()
